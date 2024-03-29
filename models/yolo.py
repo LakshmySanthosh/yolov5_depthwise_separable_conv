@@ -42,6 +42,7 @@ from models.common import (
     CrossConv,
     DetectMultiBackend,
     DWConv,
+    DepthwiseSeparableConv,
     DWConvTranspose2d,
     Expand,
     Focus,
@@ -394,6 +395,7 @@ def parse_model(d, ch):
         n = n_ = max(round(n * gd), 1) if n > 1 else n  # depth gain
         if m in {
             Conv,
+            DepthwiseSeparableConv,
             GhostConv,
             Bottleneck,
             GhostBottleneck,
