@@ -99,6 +99,24 @@ class DWConv(Conv):
         super().__init__(c1, c2, k, s, g=math.gcd(c1, c2), d=d, act=act)
 
 
+################ added block  ######################
+# def DWSeparableConv(c1, c2, k=1, s=1, act=True):
+#     cv1 = SeparableConv2d(c1, c2, k, s, act)
+#     return cv1
+
+class DepthwiseSeparableConv(nn.Module):
+    def __init__(self, c1, c2, k=1, s=1, act=True):
+        super(DepthwiseSeparableConv, self).__init__()
+
+        self.depthwise = nn.Conv(c1, c1, k, s, g=c1, act=act)
+        #   self.pointwise = nn.Conv2d(in_channels,out_channels,1,1,0,1,1,bias=bias)
+        self.pointwise = nn.Conv2d(c1, c2, 1, 1, 0, 1, 1, bias=False)
+
+    def forward(self, x):
+        x = self.depthwise(x)
+        x = self.pointwise(x)
+        return x
+
 class DWConvTranspose2d(nn.ConvTranspose2d):
     # Depth-wise transpose convolution
     def __init__(self, c1, c2, k=1, s=1, p1=0, p2=0):
