@@ -108,7 +108,7 @@ class DepthwiseSeparableConv(nn.Module):
     def __init__(self, c1, c2, k=1, s=1, act=True):
         super(DepthwiseSeparableConv, self).__init__()
 
-        self.depthwise = nn.Conv(c1, c1, k, s, g=c1, act=act)
+        self.depthwise = Conv(c1, c1, k, s, g=c1, act=act)
         #   self.pointwise = nn.Conv2d(in_channels,out_channels,1,1,0,1,1,bias=bias)
         self.pointwise = nn.Conv2d(c1, c2, 1, 1, 0, 1, 1, bias=False)
 
