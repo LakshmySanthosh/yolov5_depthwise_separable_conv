@@ -108,7 +108,7 @@ class DepthwiseSeparableConv(nn.Module):
     
     default_act = nn.SiLU()  # default activation
     
-    def __init__(self, c1, c2, k=1, s=1, p=None, g=1, d=1, act=True):
+    def __init__(self, c1, c2, k=1, s=1, p=None, d=1, act=True):
         super().__init__()
         self.depthwise = nn.Conv2d(c1, c1, k, g=c1, act=act)
         #   self.pointwise = nn.Conv2d(in_channels,out_channels,1,1,0,1,1,bias=bias)
