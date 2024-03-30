@@ -105,18 +105,31 @@ class DWConv(Conv):
 #     return cv1
 
 class DepthwiseSeparableConv(nn.Module):
-    def __init__(self, c1, c2, k=1, s=1, act=True):
-        super(DepthwiseSeparableConv, self).__init__()
-
-        self.depthwise = DWConv(c1, c1, k, s, g=c1, act=act)
+    
+    default_act = nn.SiLU()  # default activation
+    
+    def __init__(self, c1, c2, k=1, s=1, p=None, g=1, d=1, act=True):
+        super().__init__()
+        self.depthwise = nn.Conv2d(c1, c1, k, g=c1, act=act)
         #   self.pointwise = nn.Conv2d(in_channels,out_channels,1,1,0,1,1,bias=bias)
-        self.pointwise = Conv(c1, c2, 1, 1, 0, 1, 1, bias=False)
+        self.pointwise = Conv(c1, c2, 1, s, 0, 1, 1, bias=False)
+        self.bn = nn.BatchNorm2d(c2)
+        self.act = self.default_act if act is True else act if isinstance(act, nn.Module) else nn.Identity()
+
 
     def forward(self, x):
-        x = self.depthwise(x)
-        x = self.pointwise(x)
+        x=self.depthwise(x)
+        x=self.pointwise(x)
+        x=self.bn(x)
+        x=self.act(x)
         return x
 
+    def forward_fuse(self, x):
+        """Applies a fused convolution and activation function to the input tensor `x`."""
+        x=self.depthwise(x)
+        x=self.pointwise(x)
+        x=self.act(x)
+        return x
 class DWConvTranspose2d(nn.ConvTranspose2d):
     # Depth-wise transpose convolution
     def __init__(self, c1, c2, k=1, s=1, p1=0, p2=0):
