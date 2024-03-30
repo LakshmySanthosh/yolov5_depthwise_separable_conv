@@ -112,7 +112,7 @@ class DepthwiseSeparableConv(nn.Module):
         super().__init__()
         self.depthwise = nn.Conv2d(c1, c1, k, groups=c1, bias=False)
         #   self.pointwise = nn.Conv2d(in_channels,out_channels,1,1,0,1,1,bias=bias)
-        self.pointwise = nn.Conv2d(c1, c2, 1, s, bias=False)
+        self.pointwise = nn.Conv2d(c1, c2, 1, s, padding=autopad(1, p, d), bias=False)
         self.bn = nn.BatchNorm2d(c2)
         self.act = self.default_act if act is True else act if isinstance(act, nn.Module) else nn.Identity()
 
