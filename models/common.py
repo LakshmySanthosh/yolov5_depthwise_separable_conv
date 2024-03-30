@@ -112,7 +112,7 @@ class DepthwiseSeparableConv(nn.Module):
         super().__init__()
         self.depthwise = nn.Conv2d(c1, c1, k, groups=c1, bias=False)
         #   self.pointwise = nn.Conv2d(in_channels,out_channels,1,1,0,1,1,bias=bias)
-        self.pointwise = nn.Conv2d(c1, c2, 1, s, padding=autopad(1, p, d), bias=False)
+        self.pointwise = nn.Conv2d(c1, c2, 1, s, padding=autopad(k, p, d), bias=False)
         self.bn = nn.BatchNorm2d(c2)
         self.act = self.default_act if act is True else act if isinstance(act, nn.Module) else nn.Identity()
 
@@ -130,6 +130,8 @@ class DepthwiseSeparableConv(nn.Module):
         x=self.pointwise(x)
         x=self.act(x)
         return x
+
+
 class DWConvTranspose2d(nn.ConvTranspose2d):
     # Depth-wise transpose convolution
     def __init__(self, c1, c2, k=1, s=1, p1=0, p2=0):
