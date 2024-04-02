@@ -385,7 +385,7 @@ class DWS_SPPF(nn.Module):
         self.cv2 = DWSConv(c_ * 4, c2, 1, 1)
         self.m = nn.MaxPool2d(kernel_size=k, stride=1, padding=k // 2)
 
-        def forward(self, x):
+    def forward(self, x):
         """Processes input through a series of convolutions and max pooling operations for feature extraction."""
         x = self.cv1(x)
         with warnings.catch_warnings():
