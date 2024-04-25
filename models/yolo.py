@@ -27,11 +27,13 @@ if platform.system() != "Windows":
 
 from models.common import (
     C3,
+    DW_C3,
     DWS_C3,
     C3SPP,
     C3TR,
     SPP,
     SPPF,
+    DW_SPPF
     DWS_SPPF,
     Bottleneck,
     BottleneckCSP,
@@ -403,6 +405,7 @@ def parse_model(d, ch):
             GhostBottleneck,
             SPP,
             SPPF,
+            DW_SPPF,
             DWS_SPPF,
             DWConv,
             MixConv2d,
@@ -410,6 +413,7 @@ def parse_model(d, ch):
             CrossConv,
             BottleneckCSP,
             C3,
+            DW_C3,
             DWS_C3,
             C3TR,
             C3SPP,
@@ -423,7 +427,7 @@ def parse_model(d, ch):
                 c2 = make_divisible(c2 * gw, ch_mul)
 
             args = [c1, c2, *args[1:]]
-            if m in {BottleneckCSP, C3, DWS_C3, C3TR, C3Ghost, C3x}:
+            if m in {BottleneckCSP, C3, DW_C3, DWS_C3, C3TR, C3Ghost, C3x}:
                 args.insert(2, n)  # number of repeats
                 n = 1
         elif m is nn.BatchNorm2d:
