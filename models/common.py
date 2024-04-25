@@ -279,7 +279,7 @@ class DW_C3(nn.Module):
         self.cv3 = DWConv(2 * c_, c2, 1)  # optional act=FReLU(c2)
         self.m = nn.Sequential(*(Bottleneck(c_, c_, shortcut, g, e=1.0) for _ in range(n)))
 
-        def forward(self, x):
+    def forward(self, x):
         """Performs forward propagation using concatenated outputs from two convolutions and a Bottleneck sequence."""
         return self.cv3(torch.cat((self.m(self.cv1(x)), self.cv2(x)), 1))
 
