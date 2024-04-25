@@ -33,7 +33,7 @@ from models.common import (
     C3TR,
     SPP,
     SPPF,
-    DW_SPPF
+    DW_SPPF,
     DWS_SPPF,
     Bottleneck,
     BottleneckCSP,
